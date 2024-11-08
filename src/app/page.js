@@ -1,101 +1,128 @@
-import Image from "next/image";
+"use client";
+
+import { useState, useEffect } from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { motion } from 'framer-motion';
+import { FaBus, FaComments, FaUserGraduate, FaChartLine, FaSchool, FaUser, FaUserTie, FaRoute } from 'react-icons/fa';
+
+const FeatureCard = ({ icon: Icon, title, description, delay }) => (
+  <motion.div
+    className="bg-gray-800 p-6 rounded-lg transition-all duration-300 hover:bg-gray-700"
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.5, delay }}
+    whileHover={{ scale: 1.05 }}
+  >
+    <Icon className="text-4xl text-teal-400 mb-4" />
+    <h3 className="text-xl font-semibold mb-2 text-white">{title}</h3>
+    <p className="text-gray-300 text-sm leading-relaxed">{description}</p>
+  </motion.div>
+);
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.js
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const [isVisible, setIsVisible] = useState(false);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  useEffect(() => {
+    setIsVisible(true);
+  }, []);
+
+  const features = [
+    {
+      icon: FaSchool,
+      title: "For Schools",
+      description: "Streamline operations, enhance safety, and improve communication with SEAT's comprehensive school management system.",
+    },
+    {
+      icon: FaUser,
+      title: "For Parents",
+      description: "Stay connected with your child's education journey, track school buses, and communicate easily with teachers.",
+    },
+    {
+      icon: FaUserGraduate,
+      title: "For Students",
+      description: "Access schedules, assignments, and bus information all in one place for a smoother school experience.",
+    },
+    {
+      icon: FaUserTie,
+      title: "For Administrators",
+      description: "Gain valuable insights, manage staff efficiently, and ensure top-notch safety measures with our advanced tools.",
+    },
+    {
+      icon: FaBus,
+      title: "For Bus Drivers",
+      description: "Optimize routes, manage student lists, and communicate effectively with schools and parents for safer, more efficient transportation.",
+    },
+  ];
+
+  return (
+    <div className="bg-gray-900 min-h-screen">
+      <div className="container mx-auto px-4 py-20">
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: isVisible ? 1 : 0, y: isVisible ? 0 : -20 }}
+          transition={{ duration: 0.5 }}
+        >
+          <h1 className="text-5xl md:text-7xl font-bold text-white mb-4 leading-tight">Built to connect all schools</h1>
+          <p className="text-xl md:text-2xl text-gray-300 mb-8">
+            Connecting schools, parents, students, and bus services like never before
+          </p>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: isVisible ? 1 : 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+        >
+          <Link href="/contact" className="bg-teal-600 text-white py-3 px-6 rounded-full text-lg hover:bg-teal-700 transition duration-300">
+            Get Started
+          </Link>
+        </motion.div>
+
+        <div className="mt-20 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {features.map((feature, index) => (
+            <FeatureCard key={index} {...feature} delay={0.1 * (index + 1)} />
+          ))}
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+
+        <motion.div
+          className="mt-20"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: isVisible ? 1 : 0, y: isVisible ? 0 : 20 }}
+          transition={{ duration: 0.5, delay: 0.6 }}
         >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+          <h2 className="text-3xl md:text-4xl font-bold text-white text-center mb-8 leading-tight">How SEAT Works</h2>
+          <div className="bg-gray-800 p-8 rounded-lg">
+            <ol className="list-decimal pl-6 text-white">
+              {[
+                { title: "Registration", description: "Schools, bus companies, and parents sign up and input their information." },
+                { title: "Integration", description: "Bus routes, student data, and communication channels are integrated into the SEAT system." },
+                { title: "Daily Operations", description: "SEAT facilitates real-time bus tracking, attendance management, and secure communications for all parties." },
+                { title: "Optimization", description: "Continuous data analysis helps optimize routes, improve safety, and enhance overall efficiency." },
+                { title: "Feedback Loop", description: "Regular updates and new features based on user feedback and emerging technologies." }
+              ].map((step, index) => (
+                <li key={index} className="mb-6">
+                  <h3 className="text-xl font-semibold mb-2 text-teal-400">{step.title}</h3>
+                  <p className="text-gray-300 text-sm leading-relaxed">{step.description}</p>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </motion.div>
+
+        <motion.div
+          className="mt-20 text-center"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: isVisible ? 1 : 0 }}
+          transition={{ duration: 0.5, delay: 0.8 }}
         >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4 leading-tight">Ready to transform your school&apos;s transportation and communication?</h2>
+          <p className="text-xl text-gray-300 mb-8">Join SEAT today and experience the difference for schools, parents, students, and bus services.</p>
+          <Link href="/contact" className="bg-teal-600 text-white py-3 px-8 rounded-full text-lg hover:bg-teal-700 transition duration-300">
+            Get Started Now
+          </Link>
+        </motion.div>
+      </div>
     </div>
   );
 }
