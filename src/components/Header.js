@@ -7,34 +7,47 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 const menuItems = [
   {
-    title: 'Products',
+    title: 'Programs',
+    path: '/programs',
     submenu: [
-      { title: 'Schools', items: ['Bus Tracking', 'Event Management', 'Attendance System'] },
-      { title: 'Parents', items: ['Mobile App', 'Real-time Notifications', 'Student Progress Tracking'] },
-      { title: 'Students', items: ['Schedule Viewer', 'Assignment Tracker', 'School Bus Locator'] },
-      { title: 'Administrators', items: ['Analytics Dashboard', 'Staff Management', 'Emergency Alert System'] },
+      { title: 'Medical Coding', items: ['Medical Coding Certificate', 'Advanced Coding', 'Specialty Certifications'] },
+      { title: 'Career Resources', items: ['Job Placement', 'Resume Building', 'Interview Preparation'] },
     ],
   },
   {
-    title: 'Features',
+    title: 'About',
+    path: '/about',
     submenu: [
-      { title: 'Core Features', items: ['Real-time Tracking', 'Communication', 'Attendance Management', 'Event Planning'] },
-      { title: 'Advanced Features', items: ['Data Analytics', 'API Integration', 'Custom Reports', 'Multi-language Support'] },
-    ],
-  },
-  {
-    title: 'Pricing',
-    submenu: [
-      { title: 'Plans', items: ['Basic', 'Pro', 'Enterprise'] },
-      { title: 'Add-ons', items: ['Extra Storage', 'Priority Support', 'Custom Development'] },
+      { title: 'Our Institute', items: ['Our Mission', 'Our Instructors', 'Facilities'] },
+      { title: 'Testimonials', items: ['Student Success Stories', 'Employer Feedback'] },
     ],
   },
   {
     title: 'Resources',
+    path: '/resources',
     submenu: [
-      { title: 'Learn', items: ['Blog', 'Webinars', 'Case Studies', 'White Papers'] },
-      { title: 'Support', items: ['Documentation', 'FAQs', 'Community Forum', 'Video Tutorials'] },
+      { title: 'Learning', 
+        items: [
+          {text: 'Medical Terminology', path: '/medical_terminology'}, 
+          {text: 'Anatomy Basics', path: '/anatomy_basics'},
+          'Coding Guidelines'
+        ] 
+      },
+      { 
+        title: 'Student Support', 
+        items: [
+          {text: 'FAQ', path: '/faq'},
+          {text: 'Student Portal', path: '/'},
+          {text: 'Technical Support', path: '/'},
+          
+        ] 
+      },
     ],
+  },
+  {
+    title: 'Contact',
+    path: '/contact',
+    submenu: [],
   },
 ];
 
@@ -72,7 +85,7 @@ const Header = () => {
   return (
     <header 
       ref={headerRef}
-      className={`transition-colors duration-300 ${isHeaderHovered ? 'bg-white' : 'bg-gray-900'}`}
+      className={`transition-colors duration-300 ${isHeaderHovered ? 'bg-white' : 'bg-blue-900'}`}
       onMouseEnter={() => setIsHeaderHovered(true)}
       onMouseLeave={() => {
         setIsHeaderHovered(false);
@@ -81,7 +94,7 @@ const Header = () => {
     >
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
         <Link href="/">
-          <span className={`text-2xl font-bold ${isHeaderHovered ? 'text-teal-600' : 'text-white'}`}>SEAT</span>
+          <span className={`text-2xl font-bold ${isHeaderHovered ? 'text-blue-600' : 'text-white'}`}>CCI</span>
         </Link>
         <nav className="relative" ref={menuRef}>
           <ul className="flex space-x-8">
@@ -91,7 +104,7 @@ const Header = () => {
                 onMouseEnter={() => setActiveMenu(item.title)}
               >
                 <Link
-                  href={`/${item.title.toLowerCase()}`}
+                  href={item.path}
                   className={`py-2 ${isHeaderHovered ? 'text-gray-800' : 'text-white'}`}
                   data-menu={item.title}
                 >
@@ -101,7 +114,7 @@ const Header = () => {
             ))}
           </ul>
           <motion.div
-            className={`absolute bottom-0 h-0.5 ${isHeaderHovered ? 'bg-teal-600' : 'bg-teal-600'}`}
+            className={`absolute bottom-0 h-0.5 ${isHeaderHovered ? 'bg-blue-600' : 'bg-blue-400'}`}
             initial={false}
             animate={{
               width: underline.width,
@@ -111,17 +124,17 @@ const Header = () => {
           />
         </nav>
         <div className="flex items-center space-x-4">
-          <Link href="/signin" className={`hover:text-teal-400 ${isHeaderHovered ? 'text-gray-800' : 'text-white'}`}>
-            Sign In
+          <Link href="https://capitolcodinginstitute.thinkific.com/users/sign_in" className={`hover:text-blue-400 ${isHeaderHovered ? 'text-gray-800' : 'text-white'}`}>
+            Student Login
           </Link>
-          <Link href="/signup" className={`px-4 py-2 rounded-md ${isHeaderHovered ? 'bg-teal-600 text-white hover:bg-teal-700' : 'bg-teal-600 text-white hover:bg-teal-700'}`}>
-            Get Started
+          <Link href="/contact" className={`px-4 py-2 rounded-md ${isHeaderHovered ? 'bg-blue-600 text-white hover:bg-blue-700' : 'bg-blue-600 text-white hover:bg-blue-700'}`}>
+            Enroll Now
           </Link>
         </div>
       </div>
       
       <AnimatePresence>
-        {isHeaderHovered && activeMenu && menuItems.find(item => item.title === activeMenu)?.submenu && (
+        {isHeaderHovered && activeMenu && menuItems.find(item => item.title === activeMenu)?.submenu.length > 0 && (
           <motion.div
             className="absolute left-0 right-0 bg-white shadow-md z-50"
             initial={{ opacity: 0, y: -10 }}
@@ -133,13 +146,19 @@ const Header = () => {
               <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
                 {menuItems.find(item => item.title === activeMenu).submenu.map((section, index) => (
                   <div key={index}>
-                    <h3 className="text-teal-600 font-semibold mb-4">{section.title}</h3>
+                    <h3 className="text-blue-600 font-semibold mb-4">{section.title}</h3>
                     <ul className="space-y-2">
                       {section.items.map((item, itemIndex) => (
                         <li key={itemIndex}>
-                          <Link href="/" className="text-gray-600 hover:text-teal-600">
-                            {item}
-                          </Link>
+                          {typeof item === 'object' ? (
+                            <Link href={item.path} className="text-gray-600 hover:text-blue-600">
+                              {item.text}
+                            </Link>
+                          ) : (
+                            <Link href="/" className="text-gray-600 hover:text-blue-600">
+                              {item}
+                            </Link>
+                          )}
                         </li>
                       ))}
                     </ul>

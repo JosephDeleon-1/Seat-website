@@ -9,8 +9,8 @@ const inter = Inter({
 })
 
 export const metadata = {
-  title: 'SEAT - School Event & Activity Tracker',
-  description: 'Connecting schools, parents, and students like never before',
+  title: 'Capitol Coding Institute - Medical Coding Education',
+  description: 'The best place to start your medical coding career',
 }
 
 export default function RootLayout({ children }) {
